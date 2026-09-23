@@ -1,0 +1,14 @@
+{
+  "raw_url": "http://paypal-login.security-verify.com/auth",
+  "domain": "security-verify.com",
+  "subdomains": ["paypal-login"],
+  "features": {
+    "entropy": 4.12,
+    "subdomain_depth": 2,
+    "has_ip_host": false,
+    "path_length": 5
+  },
+  "knn_distance": 0.842,
+  "anomaly_score": 0.89,
+  "is_anomaly": true
+}
