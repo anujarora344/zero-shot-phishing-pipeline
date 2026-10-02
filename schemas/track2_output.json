@@ -1,14 +1,19 @@
 {
   "raw_url": "http://paypal-login.security-verify.com/auth",
-  "domain": "security-verify.com",
-  "subdomains": ["paypal-login"],
-  "features": {
-    "entropy": 4.12,
-    "subdomain_depth": 2,
-    "has_ip_host": false,
-    "path_length": 5
+  "track1_ref": {
+    "anomaly_score": 0.89,
+    "is_anomaly": true
   },
-  "knn_distance": 0.842,
-  "anomaly_score": 0.89,
-  "is_anomaly": true
+  "verdict": "PHISHING",
+  "confidence": 0.95,
+  "impersonated_brand": "PayPal",
+  "reasoning_chain": [
+    "Detected target brand 'PayPal' embedded in subdomain.",
+    "Apex domain 'security-verify.com' is completely unrelated to official PayPal infrastructure.",
+    "Combination of high vector anomaly score and brand mismatch indicates domain spoofing."
+  ],
+  "threat_indicators": [
+    "Brand Impersonation",
+    "Subdomain Misdirection"
+  ]
 }

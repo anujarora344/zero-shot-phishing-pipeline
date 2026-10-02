@@ -1,14 +1,16 @@
 {
+  "pipeline_timestamp": "2026-09-23T21:00:00Z",
   "raw_url": "http://paypal-login.security-verify.com/auth",
-  "domain": "security-verify.com",
-  "subdomains": ["paypal-login"],
-  "features": {
-    "entropy": 4.12,
-    "subdomain_depth": 2,
-    "has_ip_host": false,
-    "path_length": 5
+  "security_audit": {
+    "indirect_prompt_injection_detected": false,
+    "sanitized_payload": "http://paypal-login.security-verify.com/auth",
+    "payload_decoded": false
   },
-  "knn_distance": 0.842,
-  "anomaly_score": 0.89,
-  "is_anomaly": true
+  "analysis": {
+    "verdict": "PHISHING",
+    "confidence": 0.95,
+    "impersonated_brand": "PayPal",
+    "threat_indicators": ["Brand Impersonation", "Subdomain Misdirection"],
+    "explanation": "Detected target brand 'PayPal' embedded in subdomain. Apex domain 'security-verify.com' is completely unrelated to official PayPal infrastructure."
+  }
 }
