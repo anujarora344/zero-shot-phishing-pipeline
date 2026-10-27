@@ -1,0 +1,51 @@
+rank,domain,category
+1,google.com,Search & Cloud
+2,youtube.com,Streaming
+3,facebook.com,Social Media
+4,amazon.com,E-commerce
+5,apple.com,Technology
+6,microsoft.com,Software & Cloud
+7,wikipedia.org,Information
+8,netflix.com,Streaming
+9,linkedin.com,Professional Network
+10,twitter.com,Social Media
+11,instagram.com,Social Media
+12,github.com,Developer Platform
+13,cloudflare.com,Security & CDN
+14,yahoo.com,Portal & Mail
+15,dropbox.com,Cloud Storage
+16,zoom.us,Conferencing
+17,salesforce.com,Enterprise CRM
+18,adobe.com,Creative Software
+19,paypal.com,Financial Services
+20,bankofamerica.com,Banking
+21,chase.com,Banking
+22,wellsfargo.com,Banking
+23,citi.com,Banking
+24,nytimes.com,News & Media
+25,bbc.com,News & Media
+26,cnn.com,News & Media
+27,reddit.com,Community & Forum
+28,spotify.com,Audio Streaming
+29,whatsapp.com,Messaging
+30,office.com,Productivity
+31,live.com,Email & Services
+32,bing.com,Search Engine
+33,ebay.com,E-commerce
+34,walmart.com,Retail
+35,craigslist.org,Classifieds
+36,twitch.tv,Livestreaming
+37,pinterest.com,Visual Discovery
+38,duckduckgo.com,Privacy Search
+39,gitlab.com,Developer Platform
+40,stackoverflow.com,Technical Q&A
+41,quora.com,Knowledge Sharing
+42,medium.com,Publishing
+43,salesforce.com,Enterprise Cloud
+44,slack.com,Enterprise Chat
+45,atlassian.com,Developer Tools
+46,notion.so,Workspace Productivity
+47,stripe.com,Payment Processing
+48,intuit.com,Financial Software
+49,shopify.com,E-commerce Infrastructure
+50,vimeo.com,Video Platform

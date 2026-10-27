@@ -1,8 +1,10 @@
 venv/
+.venv/
 .env
 __pycache__/
 *.pyc
-data/
+data/*
+!data/trusted_reference_domains.csv
 chroma_db/
 faiss_index/
 .pytest_cache/
