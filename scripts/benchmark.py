@@ -1,27 +1,53 @@
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 import asyncio
+import pandas as pd
+import time
 from sklearn.metrics import classification_report, confusion_matrix
 from track_2_agentic.schemas import Track1Input
-from api import analyze_batch_endpoint
-
-# Mock Ground Truth Dataset (In reality, load this from a CSV)
-test_dataset = [
-    Track1Input(raw_url="http://paypal-login.security-verify.com", domain="security-verify.com", subdomains=["paypal-login"], features={}, knn_distance=0.89, anomaly_score=0.89, is_anomaly=True),
-    Track1Input(raw_url="https://github.com/login", domain="github.com", subdomains=[], features={}, knn_distance=0.12, anomaly_score=0.12, is_anomaly=False),
-    Track1Input(raw_url="http://amazon-support-refund.net", domain="amazon-support-refund.net", subdomains=[], features={}, knn_distance=0.75, anomaly_score=0.75, is_anomaly=True)
-]
-
-# 1 = PHISHING, 0 = BENIGN
-true_labels = [1, 0, 1] 
+from track_2_agentic.reasoning_engine import analyze_url_threat
 
 async def run_evaluation():
-    print("Running batch evaluation on testing dataset...")
+    print("Loading benchmark dataset...")
+    df = pd.read_csv("track_3_secops/track3_test_bank.csv")
     
-    # Run the batch endpoint
-    results = await analyze_batch_endpoint(test_dataset)
+    true_labels = []
+    predicted_labels = []
     
-    # Convert string verdicts to binary labels
-    predicted_labels = [1 if r.verdict == "PHISHING" else 0 for r in results]
+    print(f"Running sequential evaluation on {len(df)} URLs to respect API rate limits...")
     
+    for index, row in df.iterrows():
+        print(f"[{index + 1}/{len(df)}] Analyzing: {row['url']}")
+        
+        # Build the payload
+        payload = Track1Input(
+            raw_url=row['url'], 
+            domain=row.get('domain', 'unknown.com'), 
+            subdomains=[], 
+            features={}, 
+            knn_distance=row.get('knn_distance', 0.0), 
+            anomaly_score=row.get('anomaly_score', 0.0), 
+            is_anomaly=bool(row.get('is_anomaly', False))
+        )
+        
+        # Determine Ground Truth
+        is_phishing = str(row['actual_classification']).strip().upper() == "PHISHING"
+        true_labels.append(1 if is_phishing else 0)
+
+        try:
+            # Call the engine directly instead of the batch endpoint
+            # We use asyncio.to_thread because the Groq client in reasoning_engine is likely synchronous
+            result = await asyncio.to_thread(analyze_url_threat, payload)
+            predicted_labels.append(1 if result.verdict == "PHISHING" else 0)
+        except Exception as e:
+            print(f"Failed on {row['url']}: {e}")
+            predicted_labels.append(0) # Default to benign on failure
+            
+        # Throttle: Wait 3 seconds between requests to avoid the 429 Too Many Requests error
+        time.sleep(2)
+
     print("\n--- PERFORMANCE METRICS ---")
     print(classification_report(true_labels, predicted_labels, target_names=["BENIGN", "PHISHING"]))
     

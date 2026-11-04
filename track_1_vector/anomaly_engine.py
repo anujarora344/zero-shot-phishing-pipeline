@@ -75,7 +75,15 @@ class VectorAnomalyEngine:
         query_vector = self.embedder.encode(formatted_prompt)
 
         # Step 4: Compute unsupervised k-NN anomaly score
+        # PUNYCODE HOMOGLYPH DETECTION: If the apex domain contains "xn--", we override the anomaly score to 0.85 and mark as anomalous.
         scoring: ScoringResult = self.scorer.score(query_vector)
+
+        anomaly_score = scoring.anomaly_score
+        is_anomaly = scoring.is_anomaly
+
+        if "xn--" in parsed.domain.lower():
+            anomaly_score = 0.85
+            is_anomaly = True
 
         # Step 5: Format according to the team's agreed schema
         payload = {
@@ -119,14 +127,21 @@ class VectorAnomalyEngine:
 
         outputs = []
         for p, feat, sc in zip(parsed_list, features_list, scoring_results):
+            score_val = sc.anomaly_score
+            anom_val = sc.is_anomaly
+
+            if "xn--" in p.domain.lower():
+                score_val = 0.85
+                anom_val = True
+
             outputs.append({
                 "raw_url": p.raw_url,
                 "domain": p.domain,
                 "subdomains": p.subdomains,
                 "features": feat.to_dict(),
                 "knn_distance": sc.knn_distance,
-                "anomaly_score": sc.anomaly_score,
-                "is_anomaly": sc.is_anomaly
+                "anomaly_score": score_val,
+                "is_anomaly": anom_val
             })
         return outputs
 
